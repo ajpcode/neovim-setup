@@ -15,19 +15,21 @@ if [ $(grep DISTRIB_ID /etc/lsb-release | sed 's/^.*=//g' | wc -l) -eq 1 ]; then
 
 	# Remove basic vim
 	sudo apt-get remove -y vim vi
-	sudo apt-get autoremove
+	sudo apt-get -y autoremove
 else
 	echo "Fatal: Did not detect Ubuntu distro (required)."
 	exit 1
 fi
 
+# Clean down nvim config (if it exists)
+[ -d "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim ] && rm -rf "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+
 # Download build and install neovim is not installed
-if [ $(which nvim | wc -l) -eq 1 ]; then
-	if [ ! -d neovim ]; then
-		git clone https://github.com/neovim/neovim.git
-	fi
-	cd neovim 
-	make CMAKE_BUILD_TYPE=RelWithDebInfoi && sudo make install
+if [ $(which nvim | wc -l) -ne 1 ]; then
+	[ -d neovim ] && rm -rf neovim
+	git clone https://github.com/neovim/neovim.git
+	cd neovim
+	make CMAKE_BUILD_TYPE=RelWithDebInfo && sudo make install
 fi
 
 # Scrub config
