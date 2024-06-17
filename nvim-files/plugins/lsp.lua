@@ -8,31 +8,28 @@ return {
     {
         "williamboman/mason-lspconfig.nvim",
         config = function()
-            require("mason-lspconfig").setup({
+            require("mason-lspconfig").setup {
                 ensure_installed = { "lua_ls", "zls", "clangd" },
-            })
+            }
         end,
     },
     {
         "neovim/nvim-lspconfig",
         config = function()
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-            local lspconfig = require("lspconfig")
-            lspconfig.lua_ls.setup({})
-            lspconfig.clangd.setup({})
-            lspconfig.zls.setup({})
-
-            lspconfig.html.setup({
+            local lspconfig = require "lspconfig"
+            lspconfig.lua_ls.setup {
                 capabilities = capabilities,
-            })
-            lspconfig.lua_ls.setup({
+            }
+            lspconfig.clangd.setup {
                 capabilities = capabilities,
-            })
+            }
+            lspconfig.zls.setup {
+                capabilities = capabilities,
+            }
 
             vim.keymap.set("n", "<Leader>h", vim.lsp.buf.hover, {})
             vim.keymap.set("n", "<Leader>gd", vim.lsp.buf.definition, {})
-            vim.keymap.set("n", "<Leader>gr", vim.lsp.buf.references, {})
             vim.keymap.set("n", "<Leader>ca", vim.lsp.buf.code_action, {})
         end,
     },
