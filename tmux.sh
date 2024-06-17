@@ -32,7 +32,7 @@ sh autogen.sh
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 mkdir -p ${XDG_CONFIG_HOME}/tmux
-cp ../tmux.conf ${XDG_CONFIG_HOME}/tmux/tmux.conf
+cp ../tmux-files/tmux.conf ${XDG_CONFIG_HOME}/tmux/tmux.conf
 
 # Run TPM to install plugins
 ~/.tmux/plugins/tpm/bin/install_plugins 
