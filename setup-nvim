@@ -1,3 +1,5 @@
+#!/bin/bash
+
 COL="\e[32m"
 ERR="\e[31m"
 CEND="\e[0m"
@@ -29,8 +31,8 @@ if [ $(grep DISTRIB_ID /etc/lsb-release | sed 's/^.*=//g' | wc -l) -eq 1 ]; then
 	sudo apt-get update
 	sudo apt-get -y upgrade
 
-	# Build tools for neovim
-	sudo apt-get install -y ninja-build gettext cmake unzip curl build-essential make
+	# Build tools for neovim, python-venv is required by runtime only
+	sudo apt-get install -y ninja-build gettext cmake unzip curl build-essential make python3.10-venv
 
 	# Remove basic vim
 	sudo apt-get -y autoremove
@@ -57,9 +59,7 @@ cechon "Configuring NeoVim... "
 #git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
 mkdir -p ${XDG_CONFIG_HOME}/nvim
 cd ..
-cp neovim.init.lua ${XDG_CONFIG_HOME}/nvim/init.lua && echo "OK" || echo "FAILED"
+cp nvim-files/init.lua ${XDG_CONFIG_HOME}/nvim/init.lua && cp -r nvim-files/!(init.lua) ${XDG_CONFIG_HOME}/nvim/lua/. && echo "OK" || echo "FAILED"
 echo
-
-mkdir -p ${XDG_CONFIG_HOME}/lua/custom/plugins/
 
 cecho "NeoVim installation complete!"
