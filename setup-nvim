@@ -1,5 +1,7 @@
 #!/bin/bash
 
+shopt -s extglob
+
 COL="\e[32m"
 ERR="\e[31m"
 CEND="\e[0m"
@@ -49,15 +51,14 @@ cechon "Clean down any existing build dependencies... "
 # Download build and install neovim
 cecho "Downloading and building NeoVim from source..."
 [ -d neovim ] && rm -rf neovim
-git clone https://github.com/neovim/neovim.git
+git clone --depth 1 https://github.com/neovim/neovim.git
 cd neovim
 make CMAKE_BUILD_TYPE=RelWithDebInfo && sudo make install
 cecho "Finished downloading and building NeoVim from source."
 
 # Install kickstart
 cechon "Configuring NeoVim... "
-#git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
-mkdir -p ${XDG_CONFIG_HOME}/nvim
+mkdir -p ${XDG_CONFIG_HOME}/nvim/lua
 cd ..
 cp nvim-files/init.lua ${XDG_CONFIG_HOME}/nvim/init.lua && cp -r nvim-files/!(init.lua) ${XDG_CONFIG_HOME}/nvim/lua/. && echo "OK" || echo "FAILED"
 echo
